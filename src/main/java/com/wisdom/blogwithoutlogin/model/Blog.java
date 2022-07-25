@@ -1,11 +1,17 @@
 package com.wisdom.blogwithoutlogin.model;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
 public class Blog extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +29,12 @@ public class Blog extends BaseTime {
     @Column(nullable = false)
     private String contents;
 
+    @Builder
+    public Blog(Long id, String name, String password, String title, String contents) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.title = title;
+        this.contents = contents;
+    }
 }

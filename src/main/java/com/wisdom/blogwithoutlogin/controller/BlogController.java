@@ -1,11 +1,14 @@
 package com.wisdom.blogwithoutlogin.controller;
 
 import com.wisdom.blogwithoutlogin.model.Blog;
+import com.wisdom.blogwithoutlogin.model.BlogSaveRequestDto;
+import com.wisdom.blogwithoutlogin.model.BlogUpdateRequestDto;
 import com.wisdom.blogwithoutlogin.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,13 +32,13 @@ public class BlogController {
     }
 
     @PostMapping()
-    public ResponseEntity<Blog> saveBlog(@RequestBody Blog blog) {
-        return new ResponseEntity<>(blogService.saveBlog(blog), HttpStatus.CREATED);
+    public ResponseEntity<Blog> saveBlog(@RequestBody @Valid BlogSaveRequestDto blogSaveRequestDto) {
+        return new ResponseEntity<>(blogService.saveBlog(blogSaveRequestDto), HttpStatus.CREATED);
     }
 
-    @PostMapping("{id}")
-    public ResponseEntity<Blog> updateBlog(@PathVariable long id, @RequestBody Blog blog) {
-        return new ResponseEntity<>(blogService.updateBlog(id, blog), HttpStatus.OK);
+    @PutMapping("{id}")
+    public ResponseEntity<Blog> updateBlog(@PathVariable long id, @RequestBody @Valid BlogUpdateRequestDto blogSaveRequestDto) {
+        return new ResponseEntity<>(blogService.updateBlog(id, blogSaveRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
