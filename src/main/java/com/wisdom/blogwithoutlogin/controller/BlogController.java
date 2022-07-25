@@ -1,8 +1,10 @@
 package com.wisdom.blogwithoutlogin.controller;
 
+import com.wisdom.blogwithoutlogin.dto.BlogResponseDetailDto;
+import com.wisdom.blogwithoutlogin.dto.BlogResponseDto;
+import com.wisdom.blogwithoutlogin.dto.BlogSaveRequestDto;
+import com.wisdom.blogwithoutlogin.dto.BlogUpdateRequestDto;
 import com.wisdom.blogwithoutlogin.model.Blog;
-import com.wisdom.blogwithoutlogin.model.BlogSaveRequestDto;
-import com.wisdom.blogwithoutlogin.model.BlogUpdateRequestDto;
 import com.wisdom.blogwithoutlogin.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,12 @@ public class BlogController {
     }
 
     @GetMapping()
-    public List<Blog> getBlogs() {
+    public List<BlogResponseDto> getBlogs() {
         return blogService.getBlogs();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Blog> getBlogById(@PathVariable long id) {
+    public ResponseEntity<BlogResponseDetailDto> getBlogById(@PathVariable long id) {
         return new ResponseEntity<>(blogService.getBlogById(id), HttpStatus.OK);
     }
 

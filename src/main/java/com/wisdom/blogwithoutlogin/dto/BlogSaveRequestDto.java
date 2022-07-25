@@ -1,5 +1,6 @@
-package com.wisdom.blogwithoutlogin.model;
+package com.wisdom.blogwithoutlogin.dto;
 
+import com.wisdom.blogwithoutlogin.model.Blog;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;

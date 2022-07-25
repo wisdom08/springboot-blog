@@ -1,5 +1,6 @@
 package com.wisdom.blogwithoutlogin.model;
 
+import com.wisdom.blogwithoutlogin.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @Builder
 @NoArgsConstructor
-public class Blog extends BaseTime {
+public class Blog extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

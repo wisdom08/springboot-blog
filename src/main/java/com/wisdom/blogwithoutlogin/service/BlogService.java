@@ -1,8 +1,10 @@
 package com.wisdom.blogwithoutlogin.service;
 
+import com.wisdom.blogwithoutlogin.dto.BlogResponseDetailDto;
+import com.wisdom.blogwithoutlogin.dto.BlogResponseDto;
 import com.wisdom.blogwithoutlogin.model.Blog;
-import com.wisdom.blogwithoutlogin.model.BlogSaveRequestDto;
-import com.wisdom.blogwithoutlogin.model.BlogUpdateRequestDto;
+import com.wisdom.blogwithoutlogin.dto.BlogSaveRequestDto;
+import com.wisdom.blogwithoutlogin.dto.BlogUpdateRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +13,9 @@ import java.util.List;
 public interface BlogService {
     Blog saveBlog(BlogSaveRequestDto blogSaveRequestDto);
 
-    List<Blog> getBlogs();
+    List<BlogResponseDto> getBlogs();
 
-    Blog getBlogById(long id);
+    BlogResponseDetailDto getBlogById(long id);
 
     Blog updateBlog(long id, BlogUpdateRequestDto blogSaveRequestDto);
 
