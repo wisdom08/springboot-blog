@@ -6,6 +6,7 @@ import com.wisdom.blogwithoutlogin.model.BlogSaveRequestDto;
 import com.wisdom.blogwithoutlogin.model.BlogUpdateRequestDto;
 import com.wisdom.blogwithoutlogin.repository.BlogRepository;
 import com.wisdom.blogwithoutlogin.service.BlogService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> getBlogs() {
-        return blogRepository.findAll();
+        return blogRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
     @Override
