@@ -19,5 +19,7 @@ public interface BlogService {
 
     Blog updateBlog(long id, BlogUpdateRequestDto blogSaveRequestDto);
 
-    void deleteBlogById(long id);
+    void deleteBlogById(String password, long id);
+
+    boolean checkPassword(long id, String password);
 }

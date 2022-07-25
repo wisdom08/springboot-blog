@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/blogs")
@@ -43,9 +44,14 @@ public class BlogController {
         return new ResponseEntity<>(blogService.updateBlog(id, blogSaveRequestDto), HttpStatus.OK);
     }
 
+    @PostMapping("{id}")
+    public boolean checkPassword(@RequestBody Map<String, String> passwordMap, @PathVariable long id) {
+        return blogService.checkPassword(id, passwordMap.get("password"));
+    }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteBlogById(@PathVariable long id) {
-        blogService.deleteBlogById(id);
+    public ResponseEntity<String> deleteBlogById(@RequestBody Map<String, String> passwordMap, @PathVariable long id) {
+        blogService.deleteBlogById(passwordMap.get("password"), id);
         return new ResponseEntity<>(String.format("게시글 ID %d 번 게시글을 삭제했습니다.", id), HttpStatus.OK);
     }
 }
