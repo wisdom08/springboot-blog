@@ -1,9 +1,6 @@
 package com.wisdom.blogwithoutlogin.service.impl;
 
-import com.wisdom.blogwithoutlogin.dto.BlogResponseDetailDto;
-import com.wisdom.blogwithoutlogin.dto.BlogResponseDto;
-import com.wisdom.blogwithoutlogin.dto.BlogSaveRequestDto;
-import com.wisdom.blogwithoutlogin.dto.BlogUpdateRequestDto;
+import com.wisdom.blogwithoutlogin.dto.*;
 import com.wisdom.blogwithoutlogin.exception.ResourceNotFoundException;
 import com.wisdom.blogwithoutlogin.model.Blog;
 import com.wisdom.blogwithoutlogin.repository.BlogRepository;
@@ -24,9 +21,9 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog saveBlog(BlogSaveRequestDto blogSaveRequestDto) {
-        Blog blog = blogSaveRequestDto.toEntity();
-        return blogRepository.save(blog);
+    public BlogResponseDetailDto saveBlog(BlogSaveRequestDto blogSaveRequestDto) {
+        Blog savedBlog = blogRepository.save(blogSaveRequestDto.toEntity());
+        return new BlogResponseDetailDto(savedBlog.getName(), savedBlog.getTitle(), savedBlog.getContents(), savedBlog.getCreatedDate());
     }
 
     @Override
@@ -42,7 +39,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog updateBlog(long id, BlogUpdateRequestDto blogUpdateRequestDto) {
+    public BlogUpdateResponseDto updateBlog(long id, BlogUpdateRequestDto blogUpdateRequestDto) {
 
         Blog existingBlog = exists(id);
 
@@ -56,7 +53,7 @@ public class BlogServiceImpl implements BlogService {
         existingBlog.setTitle(blog.getTitle());
         existingBlog.setContents(blog.getContents());
         blogRepository.save(existingBlog);
-        return existingBlog;
+        return new BlogUpdateResponseDto(existingBlog.getName(), existingBlog.getTitle(), existingBlog.getContents(), existingBlog.getModifiedDate());
     }
 
     @Override
