@@ -2,6 +2,7 @@ package com.wisdom.blogwithoutlogin.service.impl;
 
 import com.wisdom.blogwithoutlogin.dto.*;
 import com.wisdom.blogwithoutlogin.exception.ResourceNotFoundException;
+import com.wisdom.blogwithoutlogin.exception.WrongPasswordException;
 import com.wisdom.blogwithoutlogin.model.Blog;
 import com.wisdom.blogwithoutlogin.repository.BlogRepository;
 import com.wisdom.blogwithoutlogin.service.BlogService;
@@ -42,13 +43,9 @@ public class BlogServiceImpl implements BlogService {
     public BlogUpdateResponseDto updateBlog(long id, BlogUpdateRequestDto blogUpdateRequestDto) {
 
         Blog existingBlog = exists(id);
-
-        String inputPassword = blogUpdateRequestDto.getPassword();
-        boolean validatePassword = checkPassword(id, inputPassword);
-        if (!validatePassword) {
-            throw new RuntimeException("비밀번호를 다시 입력해주세요.");
+        if (!checkPassword(id, blogUpdateRequestDto.getPassword())) {
+            throw new WrongPasswordException("password", false);
         }
-
         Blog blog = blogUpdateRequestDto.toEntity();
         existingBlog.setTitle(blog.getTitle());
         existingBlog.setContents(blog.getContents());
@@ -58,11 +55,8 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void deleteBlogById(String password, long id) {
-        boolean validatePassword = checkPassword(id, password);
-        System.out.println("validatePassword = " + validatePassword);
-
-        if (!validatePassword) {
-            throw new RuntimeException("비밀번호를 다시 입력해주세요.");
+        if (!checkPassword(id, password)) {
+            throw new WrongPasswordException("password", false);
         }
         blogRepository.deleteById(id);
     }
