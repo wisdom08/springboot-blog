@@ -1,11 +1,11 @@
-package com.wisdom.blogwithoutlogin.service.impl;
+package com.wisdom.blog.service.impl;
 
-import com.wisdom.blogwithoutlogin.dto.*;
-import com.wisdom.blogwithoutlogin.exception.ResourceNotFoundException;
-import com.wisdom.blogwithoutlogin.exception.WrongPasswordException;
-import com.wisdom.blogwithoutlogin.model.Blog;
-import com.wisdom.blogwithoutlogin.repository.BlogRepository;
-import com.wisdom.blogwithoutlogin.service.BlogService;
+import com.wisdom.blog.dto.*;
+import com.wisdom.blog.exception.ResourceNotFoundException;
+import com.wisdom.blog.exception.WrongPasswordException;
+import com.wisdom.blog.model.Blog;
+import com.wisdom.blog.repository.BlogRepository;
+import com.wisdom.blog.service.BlogService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 

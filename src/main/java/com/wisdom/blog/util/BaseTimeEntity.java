@@ -1,4 +1,4 @@
-package com.wisdom.blogwithoutlogin.util;
+package com.wisdom.blog.util;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

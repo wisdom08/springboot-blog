@@ -1,6 +1,6 @@
-package com.wisdom.blogwithoutlogin.model;
+package com.wisdom.blog.model;
 
-import com.wisdom.blogwithoutlogin.util.BaseTimeEntity;
+import com.wisdom.blog.util.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

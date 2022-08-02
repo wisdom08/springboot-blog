@@ -1,10 +1,10 @@
-package com.wisdom.blogwithoutlogin;
+package com.wisdom.blog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BlogWithoutLoginApplicationTests {
+class BlogTests {
 
     @Test
     void contextLoads() {

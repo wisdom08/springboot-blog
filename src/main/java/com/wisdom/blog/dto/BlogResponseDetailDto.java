@@ -1,4 +1,4 @@
-package com.wisdom.blogwithoutlogin.dto;
+package com.wisdom.blog.dto;
 
 import lombok.Builder;
 import lombok.Getter;

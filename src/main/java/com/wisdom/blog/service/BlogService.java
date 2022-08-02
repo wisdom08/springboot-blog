@@ -1,6 +1,6 @@
-package com.wisdom.blogwithoutlogin.service;
+package com.wisdom.blog.service;
 
-import com.wisdom.blogwithoutlogin.dto.*;
+import com.wisdom.blog.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

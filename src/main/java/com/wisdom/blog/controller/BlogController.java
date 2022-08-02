@@ -1,7 +1,7 @@
-package com.wisdom.blogwithoutlogin.controller;
+package com.wisdom.blog.controller;
 
-import com.wisdom.blogwithoutlogin.dto.*;
-import com.wisdom.blogwithoutlogin.service.BlogService;
+import com.wisdom.blog.dto.*;
+import com.wisdom.blog.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
