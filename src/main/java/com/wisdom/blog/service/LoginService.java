@@ -73,6 +73,7 @@ public class LoginService {
                 });
     }
 
+    @Transactional
     public TokenResponseDto reissueAccessToken(String refreshToken) {
 
         String resolveToken = resolveToken(refreshToken);
@@ -87,6 +88,7 @@ public class LoginService {
 
         String newToken = jwtTokenProvider.createRefreshToken(authentication);
         RefreshToken newRefreshToken = RefreshToken.createToken(authentication.getName(), newToken);
+        refreshTokenRepository.deleteByUserId(authentication.getName());
         refreshTokenRepository.save(newRefreshToken);
 
         return TokenResponseDto.builder()
