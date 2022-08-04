@@ -1,5 +1,14 @@
-# Springboot-Blog
-Springboot with JPA
+# 블로그 백엔드 서버
+- 게시글 작성/수정/삭제, 댓글 작성/수정/삭제, 회원가입, 로그인 기능이 있는 블로그 백엔드 서버
+
+# 사용 기술 및 개발 환경
+- Java 17
+- Spring Boot 2.7.2
+- JPA
+- Spring Security
+- JWT
+- Gradle
+- IntelliJ
 
 # API
 https://documenter.getpostman.com/view/11069976/UzXNUH9U
