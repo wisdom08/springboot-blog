@@ -4,11 +4,13 @@ import com.wisdom.blog.dto.*;
 import com.wisdom.blog.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/blogs")
@@ -32,22 +34,24 @@ public class BlogController {
 
     @PostMapping()
     public ResponseEntity<BlogResponseDetailDto> saveBlog(@RequestBody @Valid BlogSaveRequestDto blogSaveRequestDto) {
+        blogSaveRequestDto.setName(getCurrentUsername());
         return new ResponseEntity<>(blogService.saveBlog(blogSaveRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<BlogUpdateResponseDto> updateBlog(@PathVariable long id, @RequestBody @Valid BlogUpdateRequestDto blogSaveRequestDto) {
+        blogSaveRequestDto.setName(getCurrentUsername());
         return new ResponseEntity<>(blogService.updateBlog(id, blogSaveRequestDto), HttpStatus.OK);
     }
 
-    @PostMapping("{id}")
-    public boolean checkPassword(@RequestBody Map<String, String> passwordMap, @PathVariable long id) {
-        return blogService.checkPassword(id, passwordMap.get("password"));
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteBlogById(@PathVariable long id, Authentication authentication) {
+        blogService.deleteBlogById(id, getCurrentUsername());
+        return new ResponseEntity<>(String.format("게시글 ID %d 번 게시글을 삭제했습니다.", id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteBlogById(@RequestBody Map<String, String> passwordMap, @PathVariable long id) {
-        blogService.deleteBlogById(passwordMap.get("password"), id);
-        return new ResponseEntity<>(String.format("게시글 ID %d 번 게시글을 삭제했습니다.", id), HttpStatus.OK);
+    private static String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ((UserDetails)principal).getUsername();
     }
 }
