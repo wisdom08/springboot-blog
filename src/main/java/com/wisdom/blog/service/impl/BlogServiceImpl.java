@@ -2,11 +2,12 @@ package com.wisdom.blog.service.impl;
 
 import com.wisdom.blog.dto.*;
 import com.wisdom.blog.exception.ResourceNotFoundException;
-import com.wisdom.blog.exception.WrongPasswordException;
+import com.wisdom.blog.exception.UnauthorizedException;
 import com.wisdom.blog.model.Blog;
 import com.wisdom.blog.repository.BlogRepository;
 import com.wisdom.blog.service.BlogService;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,12 +42,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogUpdateResponseDto updateBlog(long id, BlogUpdateRequestDto blogUpdateRequestDto) {
-
         Blog existingBlog = exists(id);
-        if (!checkPassword(id, blogUpdateRequestDto.getPassword())) {
-            throw new WrongPasswordException("password", false);
-        }
         Blog blog = blogUpdateRequestDto.toEntity();
+        if (!(blog.getName().equals(existingBlog.getName()))) {
+            throw new UnauthorizedException(HttpStatus.UNAUTHORIZED, "작성자만 수정할 수 있습니다.");
+        }
         existingBlog.setTitle(blog.getTitle());
         existingBlog.setContents(blog.getContents());
         blogRepository.save(existingBlog);
@@ -54,17 +54,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public void deleteBlogById(String password, long id) {
-        if (!checkPassword(id, password)) {
-            throw new WrongPasswordException("password", false);
+    public void deleteBlogById(long id, String name) {
+        Blog existingBlog = exists(id);
+        if (!(name.equals(existingBlog.getName()))) {
+            throw new UnauthorizedException(HttpStatus.UNAUTHORIZED, "작성자만 삭제할 수 있습니다.");
         }
         blogRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean checkPassword(long id, String password) {
-        Blog blog = exists(id);
-        return password.equals(blog.getPassword());
     }
 
     private Blog exists(long id) {

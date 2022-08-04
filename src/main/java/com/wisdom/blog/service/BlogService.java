@@ -15,7 +15,5 @@ public interface BlogService {
 
     BlogUpdateResponseDto updateBlog(long id, BlogUpdateRequestDto blogSaveRequestDto);
 
-    void deleteBlogById(String password, long id);
-
-    boolean checkPassword(long id, String password);
+    void deleteBlogById(long id, String name);
 }
