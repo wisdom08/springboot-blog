@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         Blog blog = existsBlog(blogId);
         comment.setBlog(blog);
         Comment savedComment = commentRepository.save(comment);
-        return new CommentResponseDto(savedComment.getBody(), savedComment.getName(), savedComment.getCreatedDate());
+        return new CommentResponseDto(savedComment.getName(), savedComment.getBody(), savedComment.getCreatedDate());
     }
 
     @Override
