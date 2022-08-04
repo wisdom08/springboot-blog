@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,11 +20,7 @@ public class Blog extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false)
     private String title;
@@ -30,12 +28,15 @@ public class Blog extends BaseTimeEntity {
     @Column(nullable = false)
     private String contents;
 
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
     @Builder
-    public Blog(Long id, String name, String password, String title, String contents) {
+    public Blog(Long id, String title, String contents, String name, Set<Comment> comments) {
         this.id = id;
-        this.name = name;
-        this.password = password;
         this.title = title;
         this.contents = contents;
+        this.name = name;
+        this.comments = comments;
     }
 }
