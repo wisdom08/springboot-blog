@@ -86,8 +86,8 @@ public class LoginService {
         }
 
         String newToken = jwtTokenProvider.createRefreshToken(authentication);
-        RefreshToken newRedisToken = RefreshToken.createToken(authentication.getName(), newToken);
-        refreshTokenRepository.save(newRedisToken);
+        RefreshToken newRefreshToken = RefreshToken.createToken(authentication.getName(), newToken);
+        refreshTokenRepository.save(newRefreshToken);
 
         return TokenResponseDto.builder()
                 .accessToken("Bearer-"+jwtTokenProvider.createAccessToken(authentication))
