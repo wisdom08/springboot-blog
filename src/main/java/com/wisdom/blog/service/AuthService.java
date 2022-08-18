@@ -1,11 +1,11 @@
 package com.wisdom.blog.service;
 
-import com.wisdom.blog.dto.SignInDto;
-import com.wisdom.blog.dto.SignUpDto;
-import com.wisdom.blog.dto.TokenResponseDto;
-import com.wisdom.blog.model.Member;
+import com.wisdom.blog.dto.auth.SignInDto;
+import com.wisdom.blog.dto.auth.SignUpDto;
+import com.wisdom.blog.dto.auth.TokenResponseDto;
+import com.wisdom.blog.model.User;
 import com.wisdom.blog.model.RefreshToken;
-import com.wisdom.blog.repository.MemberRepository;
+import com.wisdom.blog.repository.UserRepository;
 import com.wisdom.blog.security.MyUserDetailsService;
 import com.wisdom.blog.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class LoginService {
+public class AuthService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MyUserDetailsService myUserDetailsService;
@@ -40,7 +40,7 @@ public class LoginService {
         }
 
         String encodePw = passwordEncoder.encode(signUpDto.getPw());
-        return memberRepository.save(Member.toEntity(userId, encodePw)).getId();
+        return userRepository.save(User.toEntity(userId, encodePw)).getId();
     }
 
     @Transactional
@@ -66,8 +66,8 @@ public class LoginService {
     }
 
     private void validateDuplicateUser(String userId){
-        memberRepository.findByUserId(userId)
-                .ifPresent(member -> {
+        userRepository.findByUserId(userId)
+                .ifPresent(user -> {
                     log.debug("userId : {}, 아이디 중복으로 회원가입 실패", userId);
                     throw new RuntimeException("아이디 중복");
                 });

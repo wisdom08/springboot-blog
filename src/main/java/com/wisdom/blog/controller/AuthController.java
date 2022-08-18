@@ -1,9 +1,9 @@
 package com.wisdom.blog.controller;
 
-import com.wisdom.blog.dto.SignInDto;
-import com.wisdom.blog.dto.SignUpDto;
-import com.wisdom.blog.dto.TokenResponseDto;
-import com.wisdom.blog.service.LoginService;
+import com.wisdom.blog.dto.auth.SignInDto;
+import com.wisdom.blog.dto.auth.SignUpDto;
+import com.wisdom.blog.dto.auth.TokenResponseDto;
+import com.wisdom.blog.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +19,27 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final LoginService loginService;
+    private final AuthService authService;
 
     @Autowired
-    public AuthController(LoginService loginService) {
-        this.loginService = loginService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public Long signUp(@RequestBody @Valid SignUpDto signUpDto) {
-        return loginService.signUp(signUpDto);
+        return authService.signUp(signUpDto);
     }
 
-    @PostMapping("/signIn")
-    public ResponseEntity<TokenResponseDto> signInp(@RequestBody @Valid SignInDto signInDto) {
-        TokenResponseDto tokenResponseDto = loginService.signIn(signInDto);
+    @PostMapping("/signin")
+    public ResponseEntity<TokenResponseDto> signIn(@RequestBody @Valid SignInDto signInDto) {
+        TokenResponseDto tokenResponseDto = authService.signIn(signInDto);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("accessToken",tokenResponseDto.getAccessToken());
         responseHeaders.set("refreshToken",tokenResponseDto.getAccessToken());
 
-        return ResponseEntity.ok().headers(responseHeaders).body(tokenResponseDto);
+        return ResponseEntity.ok().headers(responseHeaders).body(null);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AuthController {
      */
     @PostMapping("/reissue")
     public TokenResponseDto reissueToken(@RequestBody Map<String, String> refreshTokenMap){
-       return loginService.reissueAccessToken(refreshTokenMap.get("refreshToken"));
+       return authService.reissueAccessToken(refreshTokenMap.get("refreshToken"));
     }
 }
 

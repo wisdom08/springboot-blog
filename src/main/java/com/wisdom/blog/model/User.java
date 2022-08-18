@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +33,14 @@ public class Member {
     }
 
     @Builder
-    public Member(String userId, String pw) {
+    public User(String userId, String pw) {
         this.userId = userId;
         this.pw = pw;
         this.roles = "ROLE_USER";
     }
 
-    public static Member toEntity(String userId, String pw) {
-        return Member.builder()
+    public static User toEntity(String userId, String pw) {
+        return User.builder()
                 .userId(userId)
                 .pw(pw)
                 .build();

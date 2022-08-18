@@ -1,7 +1,7 @@
 package com.wisdom.blog.controller;
 
-import com.wisdom.blog.dto.CommentRequestDto;
-import com.wisdom.blog.dto.CommentResponseDto;
+import com.wisdom.blog.dto.comment.CommentRequestDto;
+import com.wisdom.blog.dto.comment.CommentResponseDto;
 import com.wisdom.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,38 +24,38 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/{blogId}")
-    public ResponseEntity<CommentResponseDto> createComment(@PathVariable(value = "blogId") long blogId,
+    @PostMapping("/{articleId}")
+    public ResponseEntity<CommentResponseDto> createComment(@PathVariable(value = "articleId") long articleId,
                                                            @Valid @RequestBody CommentRequestDto commentRequestDto){
         commentRequestDto.setName(getCurrentUsername());
-        return new ResponseEntity<>(commentService.createComment(blogId, commentRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(commentService.createComment(articleId, commentRequestDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{blogId}")
-    public List<CommentResponseDto> getCommentsByPostId(@PathVariable(value = "blogId") Long postId, @PathVariable String blogId){
-        return commentService.getCommentsByPostId(postId);
+    @GetMapping("/{articleId}")
+    public List<CommentResponseDto> getCommentsByPostId(@PathVariable(value = "articleId") Long articleId){
+        return commentService.getCommentsByArticleId(articleId);
     }
 
-    @GetMapping("/{blogId}/{id}")
-    public ResponseEntity<CommentResponseDto> getCommentById(@PathVariable(value = "blogId") Long blogId,
-                                                     @PathVariable(value = "id") Long commentId){
-        CommentResponseDto commentDto = commentService.getCommentById(blogId, commentId);
+    @GetMapping("/{articleId}/{commentId}")
+    public ResponseEntity<CommentResponseDto> getCommentById(@PathVariable(value = "articleId") Long articleId,
+                                                     @PathVariable(value = "commentId") Long commentId){
+        CommentResponseDto commentDto = commentService.getCommentById(articleId, commentId);
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{blogId}/{id}")
-    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable(value = "blogId") Long blogId,
-                                                    @PathVariable(value = "id") Long commentId,
+    @PutMapping("/{articleId}/{commentId}")
+    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable(value = "articleId") Long articleId,
+                                                    @PathVariable(value = "commentId") Long commentId,
                                                     @Valid @RequestBody CommentRequestDto commentRequestDto){
         commentRequestDto.setName(getCurrentUsername());
-        CommentResponseDto updatedComment = commentService.updateComment(blogId, commentId, commentRequestDto);
+        CommentResponseDto updatedComment = commentService.updateComment(articleId, commentId, commentRequestDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{blogId}/{id}")
-    public ResponseEntity<String> deleteComment(@PathVariable(value = "blogId") Long blogId,
-                                                @PathVariable(value = "id") Long commentId){
-        commentService.deleteComment(blogId, commentId, getCurrentUsername());
+    @DeleteMapping("/{articleId}/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable(value = "articleId") Long articleId,
+                                                @PathVariable(value = "commentId") Long commentId){
+        commentService.deleteComment(articleId, commentId, getCurrentUsername());
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
     }
 

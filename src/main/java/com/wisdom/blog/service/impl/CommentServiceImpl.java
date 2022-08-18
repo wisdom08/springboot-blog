@@ -1,12 +1,12 @@
 package com.wisdom.blog.service.impl;
 
-import com.wisdom.blog.dto.CommentRequestDto;
-import com.wisdom.blog.dto.CommentResponseDto;
+import com.wisdom.blog.dto.comment.CommentRequestDto;
+import com.wisdom.blog.dto.comment.CommentResponseDto;
 import com.wisdom.blog.exception.ForbiddenException;
 import com.wisdom.blog.exception.ResourceNotFoundException;
-import com.wisdom.blog.model.Blog;
+import com.wisdom.blog.model.Article;
 import com.wisdom.blog.model.Comment;
-import com.wisdom.blog.repository.BlogRepository;
+import com.wisdom.blog.repository.ArticleRepository;
 import com.wisdom.blog.repository.CommentRepository;
 import com.wisdom.blog.service.CommentService;
 import org.springframework.http.HttpStatus;
@@ -20,34 +20,34 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final BlogRepository blogRepository;
+    private final ArticleRepository articleRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, BlogRepository blogRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, ArticleRepository articleRepository) {
         this.commentRepository = commentRepository;
-        this.blogRepository = blogRepository;
+        this.articleRepository = articleRepository;
     }
 
     @Override
-    public CommentResponseDto createComment(long blogId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto createComment(long articleId, CommentRequestDto commentRequestDto) {
         Comment comment = commentRequestDto.toEntity();
 
-        Blog blog = existsBlog(blogId);
-        comment.setBlog(blog);
+        Article article = existsArticle(articleId);
+        comment.setArticle(article);
         Comment savedComment = commentRepository.save(comment);
         return new CommentResponseDto(savedComment.getName(), savedComment.getBody(), savedComment.getCreatedDate());
     }
 
     @Override
-    public List<CommentResponseDto> getCommentsByPostId(long postId) {
-        List<Comment> comments = commentRepository.findByBlogId(postId);
+    public List<CommentResponseDto> getCommentsByArticleId(long postId) {
+        List<Comment> comments = commentRepository.findByArticleId(postId);
         return comments.stream().map(m -> new CommentResponseDto(m.getName(), m.getBody(), m.getCreatedDate())).collect(Collectors.toList());
     }
 
     @Override
-    public CommentResponseDto getCommentById(Long blogId, Long commentId) {
-        Blog blog = existsBlog(blogId);
+    public CommentResponseDto getCommentById(Long articleId, Long commentId) {
+        Article article = existsArticle(articleId);
         Comment comment = existsComment(commentId);
-        if(!comment.getBlog().getId().equals(blog.getId())){
+        if(!comment.getArticle().getId().equals(article.getId())){
             throw new ForbiddenException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
         }
         return new CommentResponseDto(comment.getName(), comment.getBody(), comment.getCreatedDate());
@@ -56,10 +56,10 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public CommentResponseDto updateComment(Long blogId, long commentId, CommentRequestDto commentRequest) {
-        Blog blog = existsBlog(blogId);
+    public CommentResponseDto updateComment(Long articleId, long commentId, CommentRequestDto commentRequest) {
+        Article article = existsArticle(articleId);
         Comment comment = existsComment(commentId);
-        if(!comment.getBlog().getId().equals(blog.getId())){
+        if(!comment.getArticle().getId().equals(article.getId())){
             throw new ForbiddenException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
         }
         comment.setBody(commentRequest.getBody());
@@ -68,21 +68,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long postId, Long commentId, String currentUsername) {
-        Blog blog = existsBlog(postId);
+    public void deleteComment(Long articleId, Long commentId, String currentUsername) {
+        Article article = existsArticle(articleId);
 
         Comment comment = existsComment(commentId);
 
-        if(!comment.getBlog().getId().equals(blog.getId())){
+        if(!comment.getArticle().getId().equals(article.getId())){
             throw new ForbiddenException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
         }
 
         commentRepository.delete(comment);
     }
 
-    private Blog existsBlog(Long blogId) {
-        return blogRepository.findById(blogId).orElseThrow(
-                () -> new ResourceNotFoundException("Post", "id", blogId));
+    private Article existsArticle(Long articleId) {
+        return articleRepository.findById(articleId).orElseThrow(
+                () -> new ResourceNotFoundException("Article", "id", articleId));
     }
 
     private Comment existsComment(Long commentId) {

@@ -1,4 +1,4 @@
-package com.wisdom.blog.dto;
+package com.wisdom.blog.dto.article;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,16 +6,17 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class BlogResponseDto {
+public class ArticleResponseDetailDto {
     private final String name;
     private final String title;
+    private final String content;
     private final LocalDateTime createdDate;
-    private final String contents;
     @Builder
-    public BlogResponseDto(String name, String title, String contents, LocalDateTime createdDate) {
+    public ArticleResponseDetailDto(String name, String title, String content, LocalDateTime createdDate) {
         this.name = name;
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.createdDate = createdDate;
     }
+
 }
