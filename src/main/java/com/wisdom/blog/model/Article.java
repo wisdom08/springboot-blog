@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @Builder
 @NoArgsConstructor
-public class Blog extends BaseTimeEntity {
+public class Article extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +28,11 @@ public class Blog extends BaseTimeEntity {
     @Column(nullable = false)
     private String contents;
 
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     @Builder
-    public Blog(Long id, String title, String contents, String name, Set<Comment> comments) {
+    public Article(Long id, String title, String contents, String name, Set<Comment> comments) {
         this.id = id;
         this.title = title;
         this.contents = contents;

@@ -1,10 +1,9 @@
 package com.wisdom.blog.security;
 
-import com.wisdom.blog.model.Member;
-import com.wisdom.blog.repository.MemberRepository;
+import com.wisdom.blog.model.User;
+import com.wisdom.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,23 +16,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByUserId(username)
+        User user = userRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("userId : " + username + " was not found"));
 
-        return createUserDetails(member);
+        return createUserDetails(user);
     }
 
-    private UserDetails createUserDetails(Member member) {
-        List<SimpleGrantedAuthority> grantedAuthorities = member.getRoleList().stream()
+    private UserDetails createUserDetails(User user) {
+        List<SimpleGrantedAuthority> grantedAuthorities = user.getRoleList().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority))
                 .collect(Collectors.toList());
 
-        return new User(member.getUserId(),
-                member.getPw(),
+        return new org.springframework.security.core.userdetails.User(user.getUserId(),
+                user.getPw(),
                 grantedAuthorities);
     }
 }

@@ -1,15 +1,15 @@
 
 package com.wisdom.blog.service;
 
-import com.wisdom.blog.dto.CommentRequestDto;
-import com.wisdom.blog.dto.CommentResponseDto;
+import com.wisdom.blog.dto.comment.CommentRequestDto;
+import com.wisdom.blog.dto.comment.CommentResponseDto;
 
 import java.util.List;
 
 public interface CommentService {
     CommentResponseDto createComment(long postId, CommentRequestDto commentRequestDto);
 
-    List<CommentResponseDto> getCommentsByPostId(long postId);
+    List<CommentResponseDto> getCommentsByArticleId(long postId);
 
     CommentResponseDto getCommentById(Long postId, Long commentId);
 

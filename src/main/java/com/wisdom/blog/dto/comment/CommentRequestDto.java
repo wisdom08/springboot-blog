@@ -1,4 +1,4 @@
-package com.wisdom.blog.dto;
+package com.wisdom.blog.dto.comment;
 
 import com.wisdom.blog.model.Comment;
 import lombok.Getter;

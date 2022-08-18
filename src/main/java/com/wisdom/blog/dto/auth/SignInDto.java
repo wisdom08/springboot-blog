@@ -1,4 +1,4 @@
-package com.wisdom.blog.dto;
+package com.wisdom.blog.dto.auth;
 
 
 import lombok.Getter;
